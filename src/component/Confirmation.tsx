@@ -26,12 +26,12 @@ const Confirmation = ({open,OnClose,name,flavour,onConfirm}) => {
   </DialogTitle>
   <DialogContent>
     <Message>
-      Are you sure you want to delte the Hookah "{name} {flavour}" 
+      Are you sure you want to delete the Hookah "{name} {flavour}" 
     </Message>
   </DialogContent>
   <DialogActions>
      <Button color="info" variant="contained" onClick={OnClose}>Cancel</Button>
-     <Button color="error" variant="contained" onClick={onConfirm}>Confirm</Button>
+     <Button color="error" variant="contained" onClick={OnClose}>Confirm</Button>
   </DialogActions>
   </ConfirmationDialog>
   )

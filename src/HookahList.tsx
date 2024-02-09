@@ -1,53 +1,47 @@
 import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { HookahResponse } from "../types.ts";
 import { DataGrid,GridCellParams,GridColDef } from "@mui/x-data-grid";
 
 import { Button, Snackbar } from "@mui/material";
-import { deleteHookah, getHookahs } from "../hookahapi.ts";
+import  {deleteHookah, getHookahs } from "./hookahapi.ts";
 import { useState } from "react";
-import Confirmation from "./Confirmation.tsx";
-
-import Edit from "./Edit.tsx";
-import AddHookah from "./AddHookah.tsx";
-
+import Confirmation from "./component/Confirmation.tsx";
+import Edit from "./component/Edit.tsx";
+import AddHookah from "./component/AddHookah.tsx";
 
 
- const HookaList = () => {
-  const queryClient=useQueryClient()
+ const HookahList = () => {
+  
+  
 
-  const [open,setOpen]=useState(false)
 
-  const[openConfirmation,setOpenConfirmatioin]= useState(null)
+
+  const[openConfirmation,setOpenConfirmation]= useState({
+    id: 0,
+    name: '',
+    flavour: ''
+  })
   const[showSnackBar,setSnackBar]= useState(false)
 
-  const {mutate}=useMutation (deleteHookah,{
-    onSuccess:()=>{
-    
-    queryClient.invalidateQueries({queryKey:['hookahs']});
-    setSnackBar(true);
-  },
-  onError:(err)=>{
-    console.error(err);
-  }
-  
-})
+
   const {data,isSuccess}=useQuery({
+
+    
     queryKey:['hookahs'],
     queryFn:getHookahs
   })
+  console.log(data);
 
   const columns :GridColDef[]=[
     {field:'name',headerName:'name',width:200,headerClassName:'hs'},
-    {field: 'flavour', headerName: 'name', width: 200, headerClassName: 'hs'},
+    {field: 'flavour', headerName: 'flavour', width: 200, headerClassName: 'hs'},
     {field:'price',headerName:'price',width:200,headerClassName:'hs'},
     {field:"Edit",
   headerName:'',
   width:90,
   sortable:false,
   filterable:false,
-  renderCell:(params:GridCellParams)=>
-<Edit hookahdata={params.row}/>
+//   renderCell:(params:GridCellParams)=>
+// <Edit hookahdata={params.row}/>
 
 },
 
@@ -60,10 +54,10 @@ headerName:'',
   renderCell:(params:GridCellParams)=>(
     <>
     <Button color="error"
-    onClick={()=>setOpenConfirmatioin({
+    onClick={()=>setOpenConfirmation({
       id:params.row.id,
       name:params.row.name,
-      color:params.row.color,
+      flavour:params.row.flavour,
      
 
     })}
@@ -72,10 +66,10 @@ headerName:'',
     open={openConfirmation?.id===params.row.id}
     name={openConfirmation?.name===params.row.name}
     flavour={openConfirmation?.flavour===params.row.flavour}
-    OnClose={()=>setOpenConfirmatioin(false)}
+    OnClose={()=>setOpenConfirmation(false)}
     onConfirm={()=>{
-      mutate(params.row.id);
-      setOpenConfirmatioin(false)
+        mutate(params.row.id);
+        setOpenConfirmation(false)
     }
     }>
 
@@ -93,10 +87,12 @@ headerName:'',
   }else{
     return(
       <>
-      <AddHookah/>
-      <DataGrid
-      rows={data}
+      
+  
+     
+      <DataGrid 
       columns={columns}
+      rows={data}
       sx={{
         boxShadow:2,
         border:2,
@@ -121,4 +117,9 @@ headerName:'',
 
  
 }
-export default HookaList
+export default HookahList
+
+
+
+
+

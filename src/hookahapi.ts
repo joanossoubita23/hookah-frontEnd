@@ -5,18 +5,22 @@ export const getHookahs=async():Promise<HookahResponse[]>=>{
     const response=await axios.get(`${import.meta.env.VITE_API_URL}/hookahs`)
     return response.data;
 }
+
 export const deleteHookah=async(id:number):Promise<HookahResponse>=>{
-    const response=await axios.delete(`${import.meta.env.VITE_API_URL}/delete/${id}`)
+    const response=await axios.delete(`http://localhost:8080/api/v1/hookah/delete/${id}`)
     return response.data;
 }
+
 export const addHookah=async(hookah:hookah):Promise<HookahResponse>=>{
-    const response=await axios.post(`${import.meta.env.VITE_API_URL}/add`,hookah,{
+    const response=await axios.post(`http://localhost:8080/api/v1/hookah/add`,hookah,{
         headers:{
             'Content-Type':'application/json'
         }
     })
     return response.data;
 }
+
+
 export const updateHookah=async(hookahEntry:hookahEntry)=>{
     const response=await axios.put(`${import.meta.env.VITE_API_URL}/${hookahEntry.url}`,hookahEntry.hookah,{
         headers:{
